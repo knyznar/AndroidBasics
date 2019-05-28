@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">IntentsChallenge</string>
+    <string name="add_contact">Add new contact</string>
+    <string name="phone_hint">Add phone number</string>
+    <string name="website_hint">Add website</string>
+    <string name="name_hint">Add name</string>
+    <string name="location_hint">Add location</string>
+</resources>
