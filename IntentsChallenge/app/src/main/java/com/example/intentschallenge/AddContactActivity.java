@@ -9,12 +9,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class AddContactActivity extends AppCompatActivity {
+public class AddContactActivity extends AppCompatActivity implements View.OnClickListener{
     EditText editTxtPhone, editTxtWebsite, editTxtName, editTxtLocation;
     ImageView smileyFace, mediumFace, sadFace;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
@@ -26,27 +26,35 @@ public class AddContactActivity extends AppCompatActivity {
         mediumFace = findViewById(R.id.ivmedium);
         sadFace = findViewById(R.id.ivsad);
 
-        smileyFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editTxtName.getText().toString().trim();
-                String phone = editTxtPhone.getText().toString().trim();
-                String website = editTxtWebsite.getText().toString().trim();
-                String location = editTxtLocation.getText().toString().trim();
+        smileyFace.setOnClickListener(this);
+        sadFace.setOnClickListener(this);
+        mediumFace.setOnClickListener(this);
+    }
 
-                if(name.isEmpty() || phone.isEmpty() || website.isEmpty() || location.isEmpty())
-                    Toast.makeText(AddContactActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
-                else {
-                    Intent intent = new Intent(AddContactActivity.this, com.example.intentschallenge.ContactDetailsActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("phone", phone);
-                    intent.putExtra("website", website);
-                    intent.putExtra("location", location);
 
-                    startActivity(intent);
-                }
+    @Override
+    public void onClick(View v) {
+
+        if(editTxtName.getText().toString().trim().isEmpty() || editTxtPhone.getText().toString().trim().isEmpty()
+                || editTxtWebsite.getText().toString().trim().isEmpty() || editTxtLocation.getText().toString().trim().isEmpty())
+            Toast.makeText(AddContactActivity.this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+        else {
+            Intent intent = new Intent();
+            intent.putExtra("name", editTxtName.getText().toString().trim());
+            intent.putExtra("phone", editTxtPhone.getText().toString().trim());
+            intent.putExtra("website", editTxtWebsite.getText().toString().trim());
+            intent.putExtra("location", editTxtLocation.getText().toString().trim());
+
+            if(v.getId() == R.id.ivsmiley) {
+                intent.putExtra("mood", "happy");
+            } else if(v.getId() == R.id.ivmedium) {
+                intent.putExtra("mood", "medium");
+            }else if(v.getId() == R.id.ivsad) {
+                intent.putExtra("mood", "sad");
             }
-        });
 
+            setResult(RESULT_OK, intent);
+            AddContactActivity.this.finish();
+        }
     }
 }
